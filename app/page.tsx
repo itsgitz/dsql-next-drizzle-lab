@@ -9,6 +9,7 @@ interface BlogPost {
   slug: string;
   excerpt: string | null;
   published: Date | null;
+  authorName: string | null;
 }
 
 export default function BlogHome() {
@@ -87,15 +88,22 @@ export default function BlogHome() {
                     {post.excerpt}
                   </p>
                 )}
-                {post.published && (
-                  <time className="text-sm text-gray-500 dark:text-gray-500">
-                    {new Date(post.published).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </time>
-                )}
+                <div className="flex flex-col gap-2 text-sm text-gray-600 dark:text-gray-400">
+                  {post.published && (
+                    <time>
+                      {new Date(post.published).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </time>
+                  )}
+                  {post.authorName && (
+                    <div className="text-gray-500 dark:text-gray-500">
+                      By <span className="font-medium text-gray-700 dark:text-gray-300">{post.authorName}</span>
+                    </div>
+                  )}
+                </div>
               </article>
             </Link>
           ))}

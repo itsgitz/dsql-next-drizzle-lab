@@ -71,12 +71,18 @@ export default function AdminPosts() {
           </Link>
         </div>
 
-        <div className="mb-8">
+        <div className="mb-8 flex gap-4">
           <Link
             href="/"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             ← Back to blog
+          </Link>
+          <Link
+            href="/admin/authors"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            | Manage Authors
           </Link>
         </div>
 

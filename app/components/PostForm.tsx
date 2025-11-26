@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+
+interface Author {
+  id: string;
+  name: string;
+}
 
 interface PostFormProps {
   initialData?: {
@@ -11,6 +16,7 @@ interface PostFormProps {
     slug: string;
     content: string;
     excerpt?: string;
+    authorId?: string | null;
   };
   isEditing?: boolean;
 }
@@ -19,15 +25,35 @@ export function PostForm({ initialData, isEditing = false }: PostFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [loadingAuthors, setLoadingAuthors] = useState(true);
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
     slug: initialData?.slug || "",
     content: initialData?.content || "",
     excerpt: initialData?.excerpt || "",
+    authorId: initialData?.authorId || "",
   });
 
+  useEffect(() => {
+    fetchAuthors();
+  }, []);
+
+  const fetchAuthors = async () => {
+    try {
+      const response = await fetch("/api/authors");
+      if (!response.ok) throw new Error("Failed to fetch authors");
+      const data = await response.json();
+      setAuthors(data);
+    } catch (err) {
+      console.error("Failed to load authors:", err);
+    } finally {
+      setLoadingAuthors(false);
+    }
+  };
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -132,6 +158,35 @@ export function PostForm({ initialData, isEditing = false }: PostFormProps) {
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               Used in the URL: example.com/{formData.slug}
             </p>
+          </div>
+
+          <div>
+            <label
+              htmlFor="authorId"
+              className="block text-sm font-medium text-gray-900 dark:text-white mb-2"
+            >
+              Author (optional)
+            </label>
+            <select
+              id="authorId"
+              name="authorId"
+              value={formData.authorId}
+              onChange={handleChange}
+              disabled={loadingAuthors}
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 text-black dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value="">Select an author...</option>
+              {authors.map((author) => (
+                <option key={author.id} value={author.id}>
+                  {author.name}
+                </option>
+              ))}
+            </select>
+            {loadingAuthors && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                Loading authors...
+              </p>
+            )}
           </div>
 
           <div>

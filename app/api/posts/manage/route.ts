@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, slug, content, excerpt } = body;
+    const { title, slug, content, excerpt, authorId } = body;
 
     if (!title || !slug || !content) {
       return Response.json(
@@ -21,6 +21,7 @@ export async function POST(request: Request) {
         slug,
         content,
         excerpt: excerpt || null,
+        authorId: authorId || null,
       })
       .returning();
 
@@ -37,7 +38,7 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    const { id, title, slug, content, excerpt } = body;
+    const { id, title, slug, content, excerpt, authorId } = body;
 
     if (!id) {
       return Response.json(
@@ -53,6 +54,7 @@ export async function PUT(request: Request) {
         slug: slug || undefined,
         content: content || undefined,
         excerpt: excerpt !== undefined ? excerpt : undefined,
+        authorId: authorId !== undefined ? authorId : undefined,
         updated: new Date(),
       })
       .where(eq(postsTable.id, id))

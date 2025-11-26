@@ -12,6 +12,7 @@ interface BlogPost {
   excerpt: string | null;
   published: Date | null;
   updated: Date | null;
+  authorName: string | null;
 }
 
 export default function BlogPost() {
@@ -102,6 +103,11 @@ export default function BlogPost() {
                     day: "numeric",
                   })}
                 </time>
+              )}
+              {post.authorName && (
+                <div>
+                  By <span className="font-medium text-gray-700 dark:text-gray-300">{post.authorName}</span>
+                </div>
               )}
             </div>
           </header>

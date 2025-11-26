@@ -10,6 +10,7 @@ interface BlogPost {
   slug: string;
   content: string;
   excerpt: string | null;
+  authorId: string | null;
 }
 
 export default function EditPostPage() {
@@ -77,6 +78,7 @@ export default function EditPostPage() {
         slug: post.slug,
         content: post.content,
         excerpt: post.excerpt || "",
+        authorId: post.authorId || "",
       }}
       isEditing={true}
     />

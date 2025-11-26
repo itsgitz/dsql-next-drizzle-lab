@@ -1,12 +1,21 @@
 import { db } from "@/db";
-import { postsTable } from "@/db/schema";
-import { desc } from "drizzle-orm";
+import { postsTable, authorsTable } from "@/db/schema";
+import { desc, sql } from "drizzle-orm";
 
 export async function GET() {
   try {
     const posts = await db
-      .select()
+      .select({
+        id: postsTable.id,
+        title: postsTable.title,
+        slug: postsTable.slug,
+        excerpt: postsTable.excerpt,
+        published: postsTable.published,
+        authorId: postsTable.authorId,
+        authorName: authorsTable.name,
+      })
       .from(postsTable)
+      .leftJoin(authorsTable, sql`${postsTable.authorId} = ${authorsTable.id}`)
       .orderBy(desc(postsTable.published));
 
     return Response.json(posts);

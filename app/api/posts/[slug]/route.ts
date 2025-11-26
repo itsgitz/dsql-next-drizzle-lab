@@ -1,6 +1,6 @@
 import { db } from "@/db";
-import { postsTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { postsTable, authorsTable } from "@/db/schema";
+import { eq, sql } from "drizzle-orm";
 
 export async function GET(
   request: Request,
@@ -9,8 +9,19 @@ export async function GET(
   try {
     const { slug } = await params;
     const post = await db
-      .select()
+      .select({
+        id: postsTable.id,
+        title: postsTable.title,
+        slug: postsTable.slug,
+        content: postsTable.content,
+        excerpt: postsTable.excerpt,
+        published: postsTable.published,
+        updated: postsTable.updated,
+        authorId: postsTable.authorId,
+        authorName: authorsTable.name,
+      })
       .from(postsTable)
+      .leftJoin(authorsTable, sql`${postsTable.authorId} = ${authorsTable.id}`)
       .where(eq(postsTable.slug, slug))
       .limit(1);
 
