@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<{ slug: string }> },
 ) {
   try {
     const { slug } = await params;
@@ -21,9 +21,6 @@ export async function GET(
     return Response.json(post[0]);
   } catch (error) {
     console.error("Error fetching post:", error);
-    return Response.json(
-      { error: "Failed to fetch post" },
-      { status: 500 }
-    );
+    return Response.json({ error: "Failed to fetch post" }, { status: 500 });
   }
 }
