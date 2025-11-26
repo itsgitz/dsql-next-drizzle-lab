@@ -37,12 +37,24 @@ export default function BlogHome() {
     <div className="min-h-screen bg-white dark:bg-black">
       <div className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
-            Blog
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Read my latest posts
-          </p>
+          <div className="flex">
+            <div>
+              <h1 className="text-4xl font-bold text-black dark:text-white mb-2">
+                Blog
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400">
+                Read my latest posts
+              </p>
+            </div>
+            <div className="ml-auto">
+              <Link
+                href="/admin/posts"
+                className="text-blue-600 dark:text-blue-400 hover:underline"
+              >
+                Admin Page
+              </Link>
+            </div>
+          </div>
         </div>
 
         {loading && (
@@ -65,11 +77,7 @@ export default function BlogHome() {
 
         <div className="space-y-6">
           {posts.map((post) => (
-            <Link
-              key={post.id}
-              href={`/${post.slug}`}
-              className="block group"
-            >
+            <Link key={post.id} href={`/${post.slug}`} className="block group">
               <article className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:shadow-md dark:hover:shadow-md dark:hover:shadow-gray-800 transition-shadow">
                 <h2 className="text-2xl font-bold text-black dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-2">
                   {post.title}
