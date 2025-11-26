@@ -1,12 +1,52 @@
 {
-  "id": "1431c2f4-fbfc-4218-bc1c-82933817a8c4",
+  "id": "07fe9559-13fc-497f-814e-10e684820fe6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.posts": {
+    "drizzle_lab.authors": {
+      "name": "authors",
+      "schema": "drizzle_lab",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created": {
+          "name": "created",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated": {
+          "name": "updated",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "drizzle_lab.posts": {
       "name": "posts",
-      "schema": "",
+      "schema": "drizzle_lab",
       "columns": {
         "id": {
           "name": "id",
@@ -36,6 +76,12 @@
         "excerpt": {
           "name": "excerpt",
           "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "author_id": {
+          "name": "author_id",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -72,7 +118,9 @@
     }
   },
   "enums": {},
-  "schemas": {},
+  "schemas": {
+    "drizzle_lab": "drizzle_lab"
+  },
   "sequences": {},
   "roles": {},
   "policies": {},

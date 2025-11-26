@@ -1,11 +1,13 @@
-import { pgTable, varchar, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { varchar, text, timestamp, uuid, pgSchema } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
+
+export const mySchema = pgSchema("drizzle_lab");
 
 // Authors table
 // - id: random UUID
 // - name: Author name (required)
 // - created & updated: Timestamps for tracking
-export const authorsTable = pgTable("authors", {
+export const authorsTable = mySchema.table("authors", {
   id: uuid("id").primaryKey().defaultRandom(),
   name: varchar({ length: 255 }).notNull(),
   created: timestamp().defaultNow(),
@@ -20,7 +22,7 @@ export const authorsTable = pgTable("authors", {
 // - excerpt: Short summary (optional)
 // - authorId: Foreign key to authors table
 // - published & updated: Timestamps for tracking
-export const postsTable = pgTable("posts", {
+export const postsTable = mySchema.table("posts", {
   id: uuid("id").primaryKey().defaultRandom(),
   title: varchar({ length: 255 }).notNull(),
   slug: varchar({ length: 255 }).notNull().unique(),
